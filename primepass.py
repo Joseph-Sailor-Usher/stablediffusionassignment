@@ -7,19 +7,19 @@ import time
 pipe = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5")
 pipe = pipe.to("mps")
 
-prompt = "a photo of an astronaut riding a horse on mars"
-
-# First-time "warmup" pass (see explanation above)
-
-_ = pipe(prompt, num_inference_steps=1)
-
-# Results match those from the CPU device after the warmup pass.
-image = pipe(prompt).images[0]
-
-for image in images:
-    epoch_time = int(time.time())
-    prompt = prompt.replace(" ", "_")
-    prompt = prompt[:100]
-
-    file_name = str(epoch_time) + "_" + prompt + ".png"
+continueGeneration = True
+imgs = 0
+while(continueGeneration):
+    imgs += 1
+    print("Enter prompt:")
+    prompt = str(input())
+    pipe.nsfw_filter = False
+    _ = pipe(prompt, num_inference_steps=1)
+    image = pipe(prompt, height=512, width=512).images[0]
+    file_name = "image " + str(imgs) + ".png"
     image.save(file_name)
+    print("Continue?")
+    if(input() == "y"):
+        continueGeneration = True
+    else:
+        continueGeneration = False
