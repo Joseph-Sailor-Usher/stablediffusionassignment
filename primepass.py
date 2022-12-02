@@ -9,15 +9,23 @@ pipe = pipe.to("mps")
 
 continueGeneration = True
 imgs = 0
+pipe.nsfw_filter = False
 while(continueGeneration):
-    imgs += 1
     print("Enter prompt:")
     prompt = str(input())
-    pipe.nsfw_filter = False
+
+    imgs += 1
     _ = pipe(prompt, num_inference_steps=1)
-    image = pipe(prompt, height=512, width=512).images[0]
+    image = pipe(prompt).images[0]
     file_name = "image " + str(imgs) + ".png"
     image.save(file_name)
+
+    imgs += 1
+    _ = pipe(prompt, num_inference_steps=2)
+    image = pipe(prompt).images[0]
+    file_name2 = "image " + str(imgs) + ".png"
+    image.save(file_name2)
+
     print("Continue?")
     if(input() == "y"):
         continueGeneration = True
