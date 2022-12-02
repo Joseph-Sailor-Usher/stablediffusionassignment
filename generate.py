@@ -9,7 +9,7 @@ pipe = pipe.to("mps")
 
 continueGeneration = True
 imgs = 0
-pipe.nsfw_filter = False
+pipe.nsfw_filter = True
 while(continueGeneration):
     print("Enter prompt:")
     prompt = str(input())
